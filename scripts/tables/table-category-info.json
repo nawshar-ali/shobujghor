@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "categoryName",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "dev-category-info",
+  "KeySchema": [
+    {
+      "AttributeName": "categoryName",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

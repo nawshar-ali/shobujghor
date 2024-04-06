@@ -1,0 +1,14 @@
+[
+  {
+    "categoryName": "Vegetables",
+    "categoryDescription": "Fresh vegetables"
+  },
+  {
+    "categoryName": "Fruits",
+    "categoryDescription": "Fresh fruits"
+  },
+  {
+    "categoryName": "Dairy",
+    "categoryDescription": "Fresh dairy products"
+  }
+]
