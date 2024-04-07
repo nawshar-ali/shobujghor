@@ -1,4 +1,4 @@
-package com.shobujghor.app.utility.response;
+package com.shobujghor.app.utility.response.inventory;
 
 import com.shobujghor.app.utility.dto.CategoryDto;
 import lombok.AllArgsConstructor;
