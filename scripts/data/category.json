@@ -1,14 +1,17 @@
 [
   {
-    "categoryName": "Vegetables",
-    "categoryDescription": "Fresh vegetables"
+    "name": "Vegetables",
+    "shortDescription": "Fresh vegetables",
+    "longDescription": "Fresh vegetables"
   },
   {
-    "categoryName": "Fruits",
-    "categoryDescription": "Fresh fruits"
+    "name": "Fruits",
+    "shortDescription": "Fresh fruits",
+    "longDescription": "Fresh fruits"
   },
   {
-    "categoryName": "Dairy",
-    "categoryDescription": "Fresh dairy products"
+    "name": "Dairy",
+    "shortDescription": "Fresh dairy products",
+    "longDescription": "Fresh dairy products"
   }
 ]

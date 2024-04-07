@@ -1,14 +1,14 @@
 {
   "AttributeDefinitions": [
     {
-      "AttributeName": "categoryName",
+      "AttributeName": "name",
       "AttributeType": "S"
     }
   ],
   "TableName": "dev-category-info",
   "KeySchema": [
     {
-      "AttributeName": "categoryName",
+      "AttributeName": "name",
       "KeyType": "HASH"
     }
   ],
