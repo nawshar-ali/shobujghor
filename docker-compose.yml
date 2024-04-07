@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  localstack:
+    image: localstack/localstack:0.12.9
+    container_name: shobujghor-localstack
+    #    restart: always
+    ports:
+      - "7466:4566"
+    environment:
+      - SERVICES= dynamodb, apigateway, s3, cloudwatch, ssm, sqs
+      - DEBUG=${DEBUG- }
+      - DATA_DIR=${DATA_DIR- }
+      - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
+      - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DEFAULT_REGION=us-east-1
+    volumes:
+      - shobujghor-datavolume:/tmp/localstack
+
+  redis-master:
+    container_name: shobujghor-redis-master
+    image: redis
+    volumes:
+      - shobujghor-datavolume:/tmp/localstack
+    ports:
+      - 7379:6379
+
+  redis-slave-1:
+    container_name: shobujghor-redis-slave
+    image: redis
+    ports:
+      - 17379:6379
+    volumes:
+      - shobujghor-datavolume:/tmp/localstack
+    command: redis-server --slaveof redis-master 6379
+
+  dynamodb-admin:
+    depends_on:
+      - localstack
+    image: aaronshaf/dynamodb-admin
+    container_name: shobujghor-dynamodb
+    #    restart: always
+    ports:
+      - 8002:8001
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4566
+
+volumes:
+  shobujghor-datavolume:

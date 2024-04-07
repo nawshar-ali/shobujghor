@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Vegetables",
+    "shortDescription": "Fresh vegetables",
+    "longDescription": "Fresh vegetables"
+  },
+  {
+    "name": "Fruits",
+    "shortDescription": "Fresh fruits",
+    "longDescription": "Fresh fruits"
+  },
+  {
+    "name": "Dairy",
+    "shortDescription": "Fresh dairy products",
+    "longDescription": "Fresh dairy products"
+  }
+]
