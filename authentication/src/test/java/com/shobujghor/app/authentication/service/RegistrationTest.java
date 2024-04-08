@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @SpringBootTest
 @ActiveProfiles(value = "dev")
-class AuthenticationServiceImplTest {
+class RegistrationTest {
     @Mock
     UserInfoRepository userInfoRepository;
 
