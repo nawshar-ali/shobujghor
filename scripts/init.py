@@ -22,3 +22,4 @@ if __name__ == "__main__":
     execute_shell_cmd("create_table.sh")
 
     insert_data_in_table("dev-category-info", "data/category.json")
+    insert_data_in_table("dev-user-info", "data/user.json")
