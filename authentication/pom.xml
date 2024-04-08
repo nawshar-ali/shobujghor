@@ -53,7 +53,6 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>${jakarta.validation.version}</version>
         </dependency>
-        <!-- exclude junit 4 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -65,8 +64,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- junit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>

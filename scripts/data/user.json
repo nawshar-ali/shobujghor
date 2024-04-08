@@ -1,0 +1,11 @@
+[
+  {
+    "email": "abc@gmail.com",
+    "password": "1234",
+    "firstName": "abc",
+    "lastName": "cde",
+    "address": "abc",
+    "mobileNumber": "123",
+    "roles": ["ROLE_USER"]
+  }
+]

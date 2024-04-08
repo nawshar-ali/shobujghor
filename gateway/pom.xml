@@ -48,5 +48,16 @@
             <artifactId>jakarta.validation-api</artifactId>
             <version>${jakarta.validation.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.shobujghor.app.security</groupId>
+            <artifactId>security</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>${aws.javasdk.version}</version>
+        </dependency>
     </dependencies>
 </project>

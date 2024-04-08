@@ -1,5 +1,7 @@
 package com.shobujghor.app.utility.request.authentication;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginRequest implements Serializable {
+    @NotNull
+    @Email
     private String email;
+
+    @NotNull
     private String password;
 }

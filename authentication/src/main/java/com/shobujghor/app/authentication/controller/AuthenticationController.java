@@ -1,7 +1,9 @@
 package com.shobujghor.app.authentication.controller;
 
 import com.shobujghor.app.authentication.service.AuthenticationService;
+import com.shobujghor.app.utility.request.authentication.LoginRequest;
 import com.shobujghor.app.utility.request.authentication.RegistrationRequest;
+import com.shobujghor.app.utility.response.authentication.LoginResponse;
 import com.shobujghor.app.utility.response.authentication.RegistrationResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +22,10 @@ public class AuthenticationController {
     @PostMapping("/register")
     public RegistrationResponse registerCustomer(@RequestBody @Valid RegistrationRequest request) {
         return authenticationService.registerCustomer(request);
+    }
+
+    @PostMapping("/login")
+    public LoginResponse doLogin(@RequestBody @Valid LoginRequest request) {
+        return authenticationService.doLogin(request);
     }
 }
