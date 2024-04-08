@@ -18,6 +18,7 @@
 		<module>gateway</module>
 		<module>utility</module>
 		<module>inventory</module>
+		<module>authentication</module>
 	</modules>
 	<properties>
 		<java.version>21</java.version>
@@ -28,6 +29,9 @@
 		<lombok.version>1.18.30</lombok.version>
 		<redis.dependency.version>3.2.4</redis.dependency.version>
 		<gson.version>2.10.1</gson.version>
+		<jakarta.validation.version>3.1.0-M2</jakarta.validation.version>
+		<junit.version>5.10.2</junit.version>
+		<mockito.version>5.11.0</mockito.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
