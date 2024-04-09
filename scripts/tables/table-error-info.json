@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "code",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "dev-error-info",
+  "KeySchema": [
+    {
+      "AttributeName": "code",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}

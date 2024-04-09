@@ -1,0 +1,7 @@
+[
+  {
+    "code": "USER_EXISTS",
+    "message": "User with given email already exists",
+    "statusCode": 503
+  }
+]

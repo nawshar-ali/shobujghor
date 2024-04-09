@@ -23,3 +23,4 @@ if __name__ == "__main__":
 
     insert_data_in_table("dev-category-info", "data/category.json")
     insert_data_in_table("dev-user-info", "data/user.json")
+    insert_data_in_table("dev-error-info", "data/error.json")

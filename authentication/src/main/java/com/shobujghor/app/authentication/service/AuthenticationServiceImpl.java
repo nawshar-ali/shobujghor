@@ -2,6 +2,7 @@ package com.shobujghor.app.authentication.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shobujghor.app.authentication.repository.dynamo.UserInfoRepository;
+import com.shobujghor.app.utility.exception.ErrorHelperService;
 import com.shobujghor.app.utility.util.JWTUtil;
 import com.shobujghor.app.utility.constants.ErrorUtil;
 import com.shobujghor.app.utility.models.UserInfo;
@@ -21,6 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserInfoRepository userInfoRepository;
     private final ObjectMapper objectMapper;
     private final JWTUtil jwtUtil;
+    private final ErrorHelperService errorHelperService;
 
     @Override
     public RegistrationResponse registerCustomer(RegistrationRequest request) {
@@ -28,7 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (userInfoOpt.isPresent()) {
             log.error("user already exists with following email: {}", request.getEmail());
-            throw new RuntimeException(ErrorUtil.USER_EXISTS);
+            throw errorHelperService.buildExceptionFromCode(ErrorUtil.USER_EXISTS);
         }
 
         var userInfo = objectMapper.convertValue(request, UserInfo.class);
