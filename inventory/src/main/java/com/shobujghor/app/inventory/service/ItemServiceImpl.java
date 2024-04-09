@@ -3,6 +3,7 @@ package com.shobujghor.app.inventory.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shobujghor.app.inventory.repository.ItemRepository;
 import com.shobujghor.app.utility.dto.ItemDto;
+import com.shobujghor.app.utility.request.inventory.FetchItemRequest;
 import com.shobujghor.app.utility.request.inventory.ItemByCategoryRequest;
 import com.shobujghor.app.utility.response.inventory.ItemByCategoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,11 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toUnmodifiableList());
 
         return ItemByCategoryResponse.builder().items(itemList).build();
+    }
+
+    @Override
+    public ItemDto getItem(FetchItemRequest request) {
+        var item = itemRepository.getData(request.getCategoryName(), request.getItemName());
+        return objectMapper.convertValue(item, ItemDto.class);
     }
 }
