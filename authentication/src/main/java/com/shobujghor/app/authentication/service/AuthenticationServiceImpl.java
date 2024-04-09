@@ -12,6 +12,7 @@ import com.shobujghor.app.utility.response.authentication.LoginResponse;
 import com.shobujghor.app.utility.response.authentication.RegistrationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +24,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final ObjectMapper objectMapper;
     private final JWTUtil jwtUtil;
     private final ErrorHelperService errorHelperService;
+
+    @Value("${jwt.expiration}")
+    private String tokenExpirationInSecs;
 
     @Override
     public RegistrationResponse registerCustomer(RegistrationRequest request) {
@@ -46,9 +50,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (userInfoOpt.isPresent()) {
             validateCredentials(request, userInfoOpt.get());
             var accessToken = jwtUtil.generateToken(request.getEmail());
-            return LoginResponse.builder().accessToken(accessToken).build();
+            return LoginResponse.builder().accessToken(accessToken).expiresIn(tokenExpirationInSecs).build();
         } else {
-            throw new RuntimeException(ErrorUtil.INVALID_CREDENTIALS);
+            throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_CREDENTIALS);
         }
     }
 
@@ -56,7 +60,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!request.getEmail().equals(userInfo.getEmail())
         || !request.getPassword().equals(userInfo.getPassword())) {
             log.error("Credentials does not match | email: {}", request.getEmail());
-            throw new RuntimeException(ErrorUtil.INVALID_CREDENTIALS);
+            throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_CREDENTIALS);
         }
     }
 }

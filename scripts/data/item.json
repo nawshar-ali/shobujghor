@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Cabbage",
+    "categoryName": "Vegetables",
+    "shortDescription": "abc",
+    "longDescription": "abc",
+    "price": "80"
+  },
+  {
+    "name": "Tomato",
+    "categoryName": "Vegetables",
+    "shortDescription": "abc",
+    "longDescription": "abc",
+    "price": "90"
+  }
+]
