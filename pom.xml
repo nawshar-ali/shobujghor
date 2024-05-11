@@ -20,6 +20,7 @@
 		<module>inventory</module>
 		<module>authentication</module>
         <module>security</module>
+        <module>cart</module>
     </modules>
 	<properties>
 		<java.version>21</java.version>
