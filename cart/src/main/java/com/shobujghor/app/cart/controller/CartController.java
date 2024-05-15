@@ -2,7 +2,9 @@ package com.shobujghor.app.cart.controller;
 
 import com.shobujghor.app.cart.service.CartService;
 import com.shobujghor.app.utility.request.cart.AddToCartRequest;
+import com.shobujghor.app.utility.request.cart.CheckoutRequest;
 import com.shobujghor.app.utility.response.cart.AddToCartResponse;
+import com.shobujghor.app.utility.response.cart.CheckoutResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,5 +21,10 @@ public class CartController {
     @PostMapping("/add")
     public AddToCartResponse addItemToCart(@RequestBody @Valid AddToCartRequest request) {
         return cartService.addItemToCart(request);
+    }
+
+    @PostMapping("/checkout")
+    public CheckoutResponse addItemToCart(@RequestBody @Valid CheckoutRequest request) {
+        return cartService.checkout(request);
     }
 }
