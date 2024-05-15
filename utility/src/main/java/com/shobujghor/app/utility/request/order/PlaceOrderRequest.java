@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -19,4 +20,7 @@ public class PlaceOrderRequest implements Serializable {
     private String originalPrice;
     private String discountPrice;
     private String actualPrice;
+    private String deliveryAddress;
+    @Builder.Default
+    private String orderDateTime = LocalDateTime.now().toString();
 }

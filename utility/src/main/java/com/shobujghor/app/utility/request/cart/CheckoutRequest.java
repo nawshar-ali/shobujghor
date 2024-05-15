@@ -18,4 +18,7 @@ public class CheckoutRequest implements Serializable {
 
     @NotNull
     private String cartId;
+
+    @NotNull
+    private String deliveryAddress;
 }

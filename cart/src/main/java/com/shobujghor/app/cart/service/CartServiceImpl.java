@@ -38,7 +38,7 @@ public class CartServiceImpl implements CartService {
     private final Gson gson;
 
     private final String CART_ID_PREFIX = "#CART-";
-    private final String ORDER_ID_PREFIX = "#ORDER-";
+    private final String ORDER_ID_PREFIX = "#ORDER";
 
     @Value("${order.queue}")
     private String orderQueue;
@@ -78,6 +78,7 @@ public class CartServiceImpl implements CartService {
                             .map(i -> i.getItemName())
                             .collect(Collectors.toUnmodifiableList())
                     )
+                    .deliveryAddress(request.getDeliveryAddress())
                     .build();
 
             var sqsPayload = gson.toJson(placeOrderRequest);
@@ -86,6 +87,7 @@ public class CartServiceImpl implements CartService {
                         .queue(orderQueue)
                         .payload(sqsPayload)
                         .messageGroupId(getOrderId(request.getCartId())));
+                cartRepository.deleteData(cart);
             } catch (Exception e) {
                 log.error("OrderId: {} | Failed to publish event in order queue", getOrderId(request.getCartId()), e);
                 throw errorHelperService.buildExceptionFromCode(e.getMessage());

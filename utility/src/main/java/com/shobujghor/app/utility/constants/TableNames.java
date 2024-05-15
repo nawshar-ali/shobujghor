@@ -6,4 +6,5 @@ public class TableNames {
     public static final String ERROR_INFO_TABLE = "-error-info";
     public static final String ITEM_INFO_TABLE = "-item-info";
     public static final String CART_INFO_TABLE = "-cart-info";
+    public static final String ORDER_INFO_TABLE = "-order-info";
 }
