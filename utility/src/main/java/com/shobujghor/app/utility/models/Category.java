@@ -26,4 +26,8 @@ public class Category {
 
     @DynamoDBAttribute
     private String logoUrl;
+
+    @DynamoDBAttribute
+    @Builder.Default
+    private boolean enabled = true;
 }

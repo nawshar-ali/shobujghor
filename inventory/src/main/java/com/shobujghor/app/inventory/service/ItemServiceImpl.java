@@ -1,7 +1,7 @@
 package com.shobujghor.app.inventory.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shobujghor.app.inventory.repository.ItemRepository;
+import com.shobujghor.app.inventory.repository.dynamo.ItemRepository;
 import com.shobujghor.app.utility.dto.ItemDto;
 import com.shobujghor.app.utility.request.inventory.FetchItemRequest;
 import com.shobujghor.app.utility.request.inventory.ItemByCategoryRequest;
