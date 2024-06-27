@@ -2,7 +2,7 @@ package com.shobujghor.app.inventory.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.shobujghor.app.inventory.repository.CategoryRepository;
+import com.shobujghor.app.inventory.repository.dynamo.CategoryRepository;
 import com.shobujghor.app.utility.dto.CategoryDto;
 import com.shobujghor.app.utility.models.Category;
 import com.shobujghor.app.utility.response.inventory.CategoryListResponse;
@@ -21,6 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryListResponse getCategories() {
         var categoryList = categoryRepository.getListFromPaginatedScan(Category.class).stream()
+                .filter(Category::isEnabled)
                 .map(category -> objectMapper.convertValue(category, CategoryDto.class))
                 .collect(Collectors.toUnmodifiableList());
 

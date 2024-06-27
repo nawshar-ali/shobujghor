@@ -22,7 +22,8 @@
         <module>security</module>
         <module>cart</module>
 		<module>order</module>
-	</modules>
+        <module>content-manager</module>
+    </modules>
 	<properties>
 		<java.version>21</java.version>
 		<spring.boot.maven.plugin.version>3.2.4</spring.boot.maven.plugin.version>

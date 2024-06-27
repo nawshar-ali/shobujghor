@@ -24,7 +24,7 @@ public class CartController {
     }
 
     @PostMapping("/checkout")
-    public CheckoutResponse addItemToCart(@RequestBody @Valid CheckoutRequest request) {
+    public CheckoutResponse checkout(@RequestBody @Valid CheckoutRequest request) {
         return cartService.checkout(request);
     }
 }
