@@ -27,6 +27,12 @@ public class UserInfo {
     private String password;
 
     @DynamoDBAttribute
+    private String firstName;
+
+    @DynamoDBAttribute
+    private String lastName;
+
+    @DynamoDBAttribute
     private String address;
 
     @DynamoDBAttribute
