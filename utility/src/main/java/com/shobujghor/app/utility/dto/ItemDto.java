@@ -14,6 +14,7 @@ import java.io.Serializable;
 public class ItemDto implements Serializable {
     private String name;
     private String shortDescription;
+    private String categoryName;
     private String longDescription;
     private String logoUrl;
     private String price;

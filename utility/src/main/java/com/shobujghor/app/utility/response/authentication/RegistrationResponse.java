@@ -15,6 +15,6 @@ import java.time.Instant;
 public class RegistrationResponse implements Serializable {
     private String email;
 
-    @Builder.Default
-    private String updateTime = Instant.now().toString();
+    //@Builder.Default
+    //private String updateTime = Instant.now().toString();
 }
