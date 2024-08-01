@@ -13,6 +13,7 @@ import com.shobujghor.app.utility.response.authentication.RegistrationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,6 +39,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         var userInfo = objectMapper.convertValue(request, UserInfo.class);
+        userInfo.setPassword(getEncryptedPassword(request.getPassword()));
+
         userInfoRepository.saveData(userInfo);
 
         return RegistrationResponse.builder().email(request.getEmail()).build();
@@ -46,7 +49,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public LoginResponse doLogin(LoginRequest request) {
         var userInfoOpt = userInfoRepository.getData(request.getEmail());
-
         if (userInfoOpt.isPresent()) {
             validateCredentials(request, userInfoOpt.get());
             var accessToken = jwtUtil.generateToken(request.getEmail());
@@ -57,10 +59,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void validateCredentials(LoginRequest request, UserInfo userInfo) {
+        var encryptedPassword = getEncryptedPassword(request.getPassword());
+
         if (!request.getEmail().equals(userInfo.getEmail())
-        || !request.getPassword().equals(userInfo.getPassword())) {
+        || !encryptedPassword.equals(userInfo.getPassword())) {
             log.error("Credentials does not match | email: {}", request.getEmail());
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_CREDENTIALS);
         }
+    }
+
+    private String getEncryptedPassword(String rawPassword) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+        String encryptedPassword = encoder.encode(rawPassword);
+        return encryptedPassword;
     }
 }
