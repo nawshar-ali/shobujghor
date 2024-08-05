@@ -3,12 +3,14 @@ package com.shobujghor.app.authentication.service;
 import com.google.gson.Gson;
 import com.shobujghor.app.authentication.repository.dynamo.PasswordResetInfoRepository;
 import com.shobujghor.app.authentication.repository.dynamo.UserInfoRepository;
+import com.shobujghor.app.authentication.util.PasswordUtil;
 import com.shobujghor.app.utility.constants.ErrorUtil;
 import com.shobujghor.app.utility.constants.NotificationMessageType;
 import com.shobujghor.app.utility.dto.NotificationDto;
 import com.shobujghor.app.utility.exception.ErrorHelperService;
 import com.shobujghor.app.utility.models.PasswordResetInfo;
 import com.shobujghor.app.utility.request.authentication.PasswordResetRequest;
+import com.shobujghor.app.utility.request.authentication.SavePasswordRequest;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Slf4j
 public class PasswordResetServiceImpl implements PasswordResetService {
+
     private final UserInfoRepository userInfoRepository;
     private final ErrorHelperService errorHelperService;
     private final PasswordResetInfoRepository passwordResetInfoRepository;
@@ -60,6 +63,35 @@ public class PasswordResetServiceImpl implements PasswordResetService {
             log.error("User: {} | Failed to publish event in notification queue for password reset", request.getEmail(), e);
             throw errorHelperService.buildExceptionFromCode(e.getMessage());
         }
+    }
+
+    @Override
+    public String validatePasswordResetToken(String token) {
+        var passwordResetInfoOpt = passwordResetInfoRepository.getData(token);
+
+        if (passwordResetInfoOpt.isEmpty()) {
+            log.error("Invalid password reset token");
+            throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_PASSWORD_RESET_TOKEN);
+        }
+
+        return passwordResetInfoOpt.get().getEmail();
+    }
+
+    @Override
+    public boolean savePassword(SavePasswordRequest request) {
+        var userOpt = userInfoRepository.getData(request.getEmail());
+
+        if (userOpt.isEmpty()) {
+            log.error("savePassword | User: {} not found in DB", request.getEmail());
+            throw errorHelperService.buildExceptionFromCode(ErrorUtil.USER_NOT_FOUND);
+        }
+
+        var user = userOpt.get();
+
+        user.setPassword(PasswordUtil.getEncryptedPassword(request.getPassword()));
+        userInfoRepository.saveData(user);
+
+        return true;
     }
 
     private PasswordResetInfo getPasswordResetInfo(PasswordResetRequest request, HttpServletRequest httpServletRequest) {

@@ -82,6 +82,7 @@ def create_all_queues():
         print(f"Created queue : {dlq['QueueUrl']}")
 
 if __name__ == "__main__":
+    execute_shell_cmd("makeSsmParameter.sh")
     execute_shell_cmd("create_table.sh")
 
     insert_data_in_table("dev-category-info", "data/category.json")

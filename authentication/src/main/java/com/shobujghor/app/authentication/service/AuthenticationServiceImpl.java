@@ -2,6 +2,7 @@ package com.shobujghor.app.authentication.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shobujghor.app.authentication.repository.dynamo.UserInfoRepository;
+import com.shobujghor.app.authentication.util.PasswordUtil;
 import com.shobujghor.app.utility.exception.ErrorHelperService;
 import com.shobujghor.app.utility.util.JWTUtil;
 import com.shobujghor.app.utility.constants.ErrorUtil;
@@ -39,7 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         var userInfo = objectMapper.convertValue(request, UserInfo.class);
-        userInfo.setPassword(getEncryptedPassword(request.getPassword()));
+        userInfo.setPassword(PasswordUtil.getEncryptedPassword(request.getPassword()));
 
         userInfoRepository.saveData(userInfo);
 
@@ -59,18 +60,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void validateCredentials(LoginRequest request, UserInfo userInfo) {
-        var encryptedPassword = getEncryptedPassword(request.getPassword());
+        var encryptedPassword = PasswordUtil.getEncryptedPassword(request.getPassword());
 
         if (!request.getEmail().equals(userInfo.getEmail())
         || !encryptedPassword.equals(userInfo.getPassword())) {
             log.error("Credentials does not match | email: {}", request.getEmail());
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_CREDENTIALS);
         }
-    }
-
-    private String getEncryptedPassword(String rawPassword) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-        String encryptedPassword = encoder.encode(rawPassword);
-        return encryptedPassword;
     }
 }
