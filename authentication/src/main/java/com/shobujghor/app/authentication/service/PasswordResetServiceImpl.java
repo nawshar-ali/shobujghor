@@ -50,6 +50,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         var notificationDto = NotificationDto.builder()
                 .messageType(NotificationMessageType.PASSWORD_RESET_EMAIL)
                 .passwordResetLink(passwordResetInfo.getPasswordResetLink())
+                .userEmail(passwordResetInfo.getEmail())
                 .build();
 
         var sqsPayload = gson.toJson(notificationDto);

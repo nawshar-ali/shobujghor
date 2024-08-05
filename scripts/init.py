@@ -7,12 +7,14 @@ SQS_HOST = "http://localhost:7466"
 
 DEAD_LETTER_QUEUES = [
     "dev-order-dlq.fifo",
-    "dev-notification-dlq.fifo"
+    "dev-notification-dlq.fifo",
+    "dev-order-dlq.fifo"
 ]
 
 QUEUES = [
     "dev-order-queue.fifo",
-    "dev-notification-queue.fifo"
+    "dev-notification-queue.fifo",
+    "dev-order-queue.fifo"
 ]
 
 dynamodb = boto3.resource("dynamodb", endpoint_url=DYNAMO_HOST)

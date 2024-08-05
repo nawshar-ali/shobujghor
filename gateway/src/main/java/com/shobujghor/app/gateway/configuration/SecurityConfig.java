@@ -42,7 +42,12 @@ public class SecurityConfig {
         return http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeRequests()
-                .requestMatchers("/auth/login", "/home/load").permitAll()
+                .requestMatchers(
+                        "/auth/login",
+                        "/auth/register",
+                        "/user/change-password",
+                        "/home/load"
+                ).permitAll()
                 .requestMatchers("/**")
                 .authenticated()
                 .and()

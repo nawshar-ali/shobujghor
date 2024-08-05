@@ -1,5 +1,6 @@
 package com.shobujghor.app.utility.constants;
 
 public enum NotificationMessageType {
-    PASSWORD_RESET_EMAIL
+    PASSWORD_RESET_EMAIL,
+    ORDER_CONFIRM
 }
