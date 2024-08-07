@@ -29,7 +29,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public void resetUserPassword(PasswordResetRequest request, HttpServletRequest httpServletRequest) {
-        authenticationClient.resetUserPassword(request, httpServletRequest);
+        request.setLocale(httpServletRequest.getLocale());
+        authenticationClient.resetUserPassword(request);
     }
 
     @Override

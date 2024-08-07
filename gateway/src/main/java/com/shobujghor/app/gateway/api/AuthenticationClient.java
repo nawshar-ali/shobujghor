@@ -20,7 +20,7 @@ public interface AuthenticationClient {
     LoginResponse doLogin(LoginRequest request);
 
     @PostMapping("/user/reset-password")
-    void resetUserPassword(PasswordResetRequest request, HttpServletRequest httpServletRequest);
+    void resetUserPassword(PasswordResetRequest request);
 
     @PostMapping("/user/change-password")
     String validatePasswordResetToken(String token);

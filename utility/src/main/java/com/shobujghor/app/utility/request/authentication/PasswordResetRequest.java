@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 @Data
 @Builder
@@ -13,4 +14,5 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class PasswordResetRequest implements Serializable {
     private String email;
+    private Locale locale;
 }

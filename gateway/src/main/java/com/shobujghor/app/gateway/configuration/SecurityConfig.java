@@ -47,7 +47,8 @@ public class SecurityConfig {
                         "/auth/register",
                         "/user/change-password",
                         "/home/load"
-                ).permitAll()
+                )
+                .permitAll()
                 .requestMatchers("/**")
                 .authenticated()
                 .and()

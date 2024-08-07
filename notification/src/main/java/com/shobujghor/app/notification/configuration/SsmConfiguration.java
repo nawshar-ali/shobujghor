@@ -34,12 +34,4 @@ public class SsmConfiguration {
         securedApplicationProperties.put(SsmKeys.EMAIL_PASSWORD_KEY, ssmService.getSsmParamValue(ssmClient, ssmPrefix + emailPasswordKey));
         return securedApplicationProperties;
     }
-
-    @Bean
-    public SsmClient ssmClient() {
-        return SsmClient.builder()
-                .endpointOverride(java.net.URI.create(AwsEndpoints.SSM_ENDPOINT))
-                .region(Region.US_EAST_1)
-                .build();
-    }
 }

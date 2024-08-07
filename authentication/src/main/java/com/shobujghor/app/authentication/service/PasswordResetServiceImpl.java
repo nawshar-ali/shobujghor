@@ -12,7 +12,6 @@ import com.shobujghor.app.utility.models.PasswordResetInfo;
 import com.shobujghor.app.utility.request.authentication.PasswordResetRequest;
 import com.shobujghor.app.utility.request.authentication.SavePasswordRequest;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +35,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private static final String PASSWORD_CHANGE_ENDPOINT = "/user/change-password?token=";
 
     @Override
-    public void resetUserPassword(PasswordResetRequest request, HttpServletRequest httpServletRequest) {
+    public void resetUserPassword(PasswordResetRequest request) {
         var userInfoOpt = userInfoRepository.getData(request.getEmail());
 
         if (userInfoOpt.isEmpty()) {
@@ -44,7 +43,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.USER_NOT_FOUND);
         }
 
-        var passwordResetInfo = getPasswordResetInfo(request, httpServletRequest);
+        var passwordResetInfo = getPasswordResetInfo(request);
         passwordResetInfoRepository.saveData(passwordResetInfo);
 
         var notificationDto = NotificationDto.builder()
@@ -95,10 +94,10 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         return true;
     }
 
-    private PasswordResetInfo getPasswordResetInfo(PasswordResetRequest request, HttpServletRequest httpServletRequest) {
+    private PasswordResetInfo getPasswordResetInfo(PasswordResetRequest request) {
         var token = UUID.randomUUID().toString();
 
-        String passwordResetLink = httpServletRequest.getLocale() + PASSWORD_CHANGE_ENDPOINT + token;
+        String passwordResetLink = request.getLocale() + PASSWORD_CHANGE_ENDPOINT + token;
 
         return PasswordResetInfo.builder()
                 .email(request.getEmail())

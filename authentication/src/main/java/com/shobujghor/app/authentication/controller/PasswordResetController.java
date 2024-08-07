@@ -3,7 +3,6 @@ package com.shobujghor.app.authentication.controller;
 import com.shobujghor.app.authentication.service.PasswordResetService;
 import com.shobujghor.app.utility.request.authentication.PasswordResetRequest;
 import com.shobujghor.app.utility.request.authentication.SavePasswordRequest;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +13,8 @@ public class PasswordResetController {
     private final PasswordResetService passwordResetService;
 
     @PostMapping("/user/reset-password")
-    public void resetUserPassword(@RequestBody PasswordResetRequest request, HttpServletRequest httpServletRequest) {
-        passwordResetService.resetUserPassword(request, httpServletRequest);
+    public void resetUserPassword(@RequestBody PasswordResetRequest request) {
+        passwordResetService.resetUserPassword(request);
     }
 
     @GetMapping("/user/change-password")

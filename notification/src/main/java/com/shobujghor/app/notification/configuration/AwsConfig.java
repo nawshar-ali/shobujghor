@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
+import software.amazon.awssdk.services.ssm.SsmClient;
 
 import java.net.URI;
 
@@ -46,6 +47,14 @@ public class AwsConfig {
         return SqsAsyncClient.builder()
                 .region(Region.US_EAST_1)
                 .endpointOverride(URI.create(AwsEndpoints.SQS_ENDPOINT))
+                .build();
+    }
+
+    @Bean
+    public SsmClient ssmClient() {
+        return SsmClient.builder()
+                .endpointOverride(java.net.URI.create(AwsEndpoints.SSM_ENDPOINT))
+                .region(Region.US_EAST_1)
                 .build();
     }
 }
