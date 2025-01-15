@@ -13,6 +13,7 @@ import com.shobujghor.app.utility.response.authentication.RegistrationResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,11 +37,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("user already exists with following email: {}", request.getEmail());
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.USER_EXISTS);
         }
-
+        
         var userInfo = objectMapper.convertValue(request, UserInfo.class);
+        var encryptedPassword = encryptPassword(request.getPassword());
+        userInfo.setPassword(encryptedPassword);
+
         userInfoRepository.saveData(userInfo);
 
         return RegistrationResponse.builder().email(request.getEmail()).build();
+    }
+
+    private String encryptPassword(String rawPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(rawPassword);
     }
 
     @Override
@@ -57,8 +66,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void validateCredentials(LoginRequest request, UserInfo userInfo) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        boolean isPasswordMatch = passwordEncoder.matches(request.getPassword(), userInfo.getPassword());
+
         if (!request.getEmail().equals(userInfo.getEmail())
-        || !request.getPassword().equals(userInfo.getPassword())) {
+        || !isPasswordMatch) {
             log.error("Credentials does not match | email: {}", request.getEmail());
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_CREDENTIALS);
         }
