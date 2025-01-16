@@ -3,6 +3,7 @@ package com.shobujghor.app.utility.models;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.shobujghor.app.utility.constants.IdStatus;
 import com.shobujghor.app.utility.constants.Roles;
 import com.shobujghor.app.utility.constants.TableNames;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,9 @@ public class UserInfo {
 
     @DynamoDBAttribute
     private String profileImage;
+
+    @DynamoDBAttribute
+    private IdStatus status;
 
     @DynamoDBAttribute
     @Builder.Default

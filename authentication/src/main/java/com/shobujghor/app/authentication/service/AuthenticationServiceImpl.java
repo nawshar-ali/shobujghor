@@ -2,6 +2,7 @@ package com.shobujghor.app.authentication.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.shobujghor.app.authentication.repository.dynamo.UserInfoRepository;
+import com.shobujghor.app.utility.constants.IdStatus;
 import com.shobujghor.app.utility.exception.ErrorHelperService;
 import com.shobujghor.app.utility.util.JWTUtil;
 import com.shobujghor.app.utility.constants.ErrorUtil;
@@ -41,6 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var userInfo = objectMapper.convertValue(request, UserInfo.class);
         var encryptedPassword = encryptPassword(request.getPassword());
         userInfo.setPassword(encryptedPassword);
+        userInfo.setStatus(IdStatus.VERIFICATION_PENDING);
 
         userInfoRepository.saveData(userInfo);
 
@@ -74,6 +76,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         || !isPasswordMatch) {
             log.error("Credentials does not match | email: {}", request.getEmail());
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.INVALID_CREDENTIALS);
+        }
+
+        if (IdStatus.VERIFICATION_PENDING == userInfo.getStatus()) {
+            log.error("ID is not verified yet | email: {}", request.getEmail());
+            throw errorHelperService.buildExceptionFromCode(ErrorUtil.VERIFICATION_PENDING);
         }
     }
 }

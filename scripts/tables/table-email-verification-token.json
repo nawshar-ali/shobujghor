@@ -1,0 +1,19 @@
+{
+  "AttributeDefinitions": [
+    {
+      "AttributeName": "token",
+      "AttributeType": "S"
+    }
+  ],
+  "TableName": "dev-email-verification-token",
+  "KeySchema": [
+    {
+      "AttributeName": "token",
+      "KeyType": "HASH"
+    }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 5,
+    "WriteCapacityUnits": 5
+  }
+}
