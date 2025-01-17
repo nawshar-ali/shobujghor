@@ -7,4 +7,5 @@ public class TableNames {
     public static final String ITEM_INFO_TABLE = "-item-info";
     public static final String CART_INFO_TABLE = "-cart-info";
     public static final String ORDER_INFO_TABLE = "-order-info";
+    public static final String EMAIL_VERIFICATION_TOKEN_TABLE = "-email-verification-token";
 }

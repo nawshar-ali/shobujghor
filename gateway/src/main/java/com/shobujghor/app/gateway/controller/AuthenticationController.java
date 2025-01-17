@@ -7,10 +7,7 @@ import com.shobujghor.app.utility.response.authentication.LoginResponse;
 import com.shobujghor.app.utility.response.authentication.RegistrationResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,5 +24,10 @@ public class AuthenticationController {
     @PostMapping("/login")
     public LoginResponse doLogin(@RequestBody @Valid LoginRequest request) {
         return authenticationService.doLogin(request);
+    }
+
+    @GetMapping("/verify-email")
+    public String verifyEmail(@RequestParam String token) {
+        return authenticationService.verifyEmail(token);
     }
 }

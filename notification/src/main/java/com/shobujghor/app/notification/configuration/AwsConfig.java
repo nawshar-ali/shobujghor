@@ -1,4 +1,4 @@
-package com.shobujghor.app.authentication.configuration;
+package com.shobujghor.app.notification.configuration;
 
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;

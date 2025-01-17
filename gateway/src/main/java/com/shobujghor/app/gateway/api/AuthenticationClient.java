@@ -7,6 +7,7 @@ import com.shobujghor.app.utility.response.authentication.RegistrationResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "authenticationClient", url = "http://localhost:8004/authentication")
 public interface AuthenticationClient {
@@ -15,4 +16,7 @@ public interface AuthenticationClient {
 
     @PostMapping("/auth/login")
     LoginResponse doLogin(LoginRequest request);
+
+    @GetMapping("/verify-email")
+    String verifyEmail(@RequestParam String token);
 }

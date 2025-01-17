@@ -23,4 +23,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public LoginResponse doLogin(LoginRequest request) {
         return authenticationClient.doLogin(request);
     }
+
+    @Override
+    public String verifyEmail(String token) {
+        return authenticationClient.verifyEmail(token);
+    }
 }
