@@ -1,4 +1,4 @@
-package com.shobujghor.app.notification.dynamo;
+package com.shobujghor.app.authentication.repository.dynamo;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.shobujghor.app.utility.dynamo.AbstractDynamoDbRepository;

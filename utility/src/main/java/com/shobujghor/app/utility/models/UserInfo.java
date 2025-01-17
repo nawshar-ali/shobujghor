@@ -1,8 +1,6 @@
 package com.shobujghor.app.utility.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.shobujghor.app.utility.constants.IdStatus;
 import com.shobujghor.app.utility.constants.Roles;
 import com.shobujghor.app.utility.constants.TableNames;
@@ -11,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +40,7 @@ public class UserInfo {
     private String profileImage;
 
     @DynamoDBAttribute
+    @DynamoDBTypeConvertedEnum
     private IdStatus status;
 
     @DynamoDBAttribute

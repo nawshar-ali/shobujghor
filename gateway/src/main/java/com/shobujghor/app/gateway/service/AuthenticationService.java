@@ -9,4 +9,6 @@ public interface AuthenticationService {
     RegistrationResponse registerCustomer(RegistrationRequest request);
 
     LoginResponse doLogin(LoginRequest request);
+
+    String verifyEmail(String token);
 }

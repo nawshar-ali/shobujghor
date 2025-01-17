@@ -15,5 +15,6 @@ import java.io.Serializable;
 public class NotificationRequest implements Serializable {
     private String message;
     private String receiverEmail;
+    private String emailVerificationToken;
     private NotificationType type;
 }
