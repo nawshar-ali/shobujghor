@@ -51,11 +51,13 @@ public class CartServiceImpl implements CartService {
                 .build()
         );
 
-        if (StringUtils.hasText(request.getCartId())) {
-            fetchCartAndAddItem(request, item);
-        } else {
-            createNewCart(request, item);
-        }
+        fetchCartAndAddItem(request, item);
+
+//        if (StringUtils.hasText(request.getCartId())) {
+//            fetchCartAndAddItem(request, item);
+//        } else {
+//            createNewCart(request, item);
+//        }
 
 
         return AddToCartResponse.builder().cartId(request.getCartId()).build();
@@ -111,32 +113,66 @@ public class CartServiceImpl implements CartService {
         var cartId = getCartId();
 
         var cart = Cart.builder()
-                .id(cartId)
+                .id(request.getCartId())
                 .amountToBePaid(cartItem.getTotalPrice())
                 .totalBillAmount(cartItem.getTotalPrice())
                 .itemList(List.of(cartItem))
                 .build();
         cartRepository.saveData(cart);
-        request.setCartId(cartId);
+        //request.setCartId(cartId);
     }
 
     private void fetchCartAndAddItem(AddToCartRequest request, ItemDto item) {
-        cartRepository.getData(request.getCartId())
-                .ifPresentOrElse(cart -> {
-                    cart.getItemList().stream()
-                            .forEach(cartItem -> {
-                                if (item.getName().equals(cartItem.getItemName())) {
-                                    var updatedQuantity = MathUtil.addIntegerString(request.getQuantity(), cartItem.getQuantity());
-                                    var updatedPrice = MathUtil.addDoubleString(item.getPrice(), cartItem.getTotalPrice());
+        var cartOpt = cartRepository.getData(request.getCartId());
 
-                                    // TODO: update discount logic later
-                                    cart.setTotalBillAmount(updatedPrice);
-                                    cartItem.setQuantity(updatedQuantity);
-                                    cart.setAmountToBePaid(updatedPrice);
-                                }
-                            });
-                    cartRepository.saveData(cart);
-                }, () -> errorHelperService.buildExceptionFromCode(ErrorUtil.CART_NOT_FOUND));
+        if (cartOpt.isPresent()) {
+            var cart = cartOpt.get();
+            var added = false;
+
+            for (int i = 0; i < cart.getItemList().size(); i++) {
+                var cartItem = cart.getItemList().get(i);
+                if (item.getName().equals(cartItem.getItemName())) {
+                    var updatedQuantity = MathUtil.addIntegerString(request.getQuantity(), cartItem.getQuantity());
+                    var price = MathUtil.multiplyDoubleString(item.getPrice(), request.getQuantity());
+                    var updatedTotalPrice = MathUtil.addDoubleString(price, cart.getTotalBillAmount());
+
+                    var cartItemTotalPrice = MathUtil.addDoubleString(price, cartItem.getTotalPrice());
+                    // TODO: update discount logic later
+
+                    cartItem.setQuantity(updatedQuantity);
+                    cartItem.setTotalPrice(cartItemTotalPrice);
+                    cartItem.setActualPrice(cartItemTotalPrice);
+
+                    cart.setAmountToBePaid(updatedTotalPrice);
+                    cart.setTotalBillAmount(updatedTotalPrice);
+                    added = true;
+                    break;
+                }
+            }
+
+            if (!added) {
+                var cartItem = CartItem.builder()
+                        .itemName(item.getName())
+                        .quantity(request.getQuantity())
+                        .totalPrice(MathUtil.multiplyDoubleString(request.getQuantity(), item.getPrice()))
+                        .totalDiscount("0.0")
+                        .actualPrice(MathUtil.multiplyDoubleString(request.getQuantity(), item.getPrice()))
+                        .build();
+
+                var updatedPrice = MathUtil.addDoubleString(cartItem.getTotalPrice(), cart.getTotalBillAmount());
+
+                // TODO: update discount logic later
+                cart.setTotalBillAmount(updatedPrice);
+                cartItem.setQuantity(request.getQuantity());
+                cart.setAmountToBePaid(updatedPrice);
+
+                cart.getItemList().add(cartItem);
+            }
+
+            cartRepository.saveData(cart);
+        } else {
+            createNewCart(request, item);
+        }
     }
 
     private String getCartId() {
