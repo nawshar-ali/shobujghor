@@ -8,6 +8,7 @@ import CategoryItems from "./components/CategoryItems";
 import Navbar from "./components/Navbar";
 import Register from "./components/Register";
 import EmailVerification from "./components/EmailVerification";
+import ViewCart from "./components/ViewCart";
 
 const EmailVerificationPage = () => (
     <div className="container mt-5 text-center">
@@ -29,6 +30,7 @@ const App = () => {
                             <Route path="/register" element={<Register />} />
                             <Route path="/email-verification" element={<EmailVerificationPage />} />
                             <Route path="/verify-email" element={<EmailVerification />} />
+                            <Route path="/cart" element={<ViewCart />} />
                         </Routes>
                     </CartProvider>
                 </AuthProvider>

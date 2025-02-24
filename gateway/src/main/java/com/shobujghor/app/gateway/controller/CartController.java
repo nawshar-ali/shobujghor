@@ -3,8 +3,10 @@ package com.shobujghor.app.gateway.controller;
 import com.shobujghor.app.gateway.service.CartService;
 import com.shobujghor.app.utility.request.cart.AddToCartRequest;
 import com.shobujghor.app.utility.request.cart.CheckoutRequest;
+import com.shobujghor.app.utility.request.cart.ViewCartRequest;
 import com.shobujghor.app.utility.response.cart.AddToCartResponse;
 import com.shobujghor.app.utility.response.cart.CheckoutResponse;
+import com.shobujghor.app.utility.response.cart.ViewCartResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,5 +29,10 @@ public class CartController {
     @PostMapping("/checkout")
     public CheckoutResponse checkout(@RequestBody @Valid CheckoutRequest request) {
         return cartService.checkout(request);
+    }
+
+    @PostMapping("/view")
+    public ViewCartResponse viewCart(@RequestBody @Valid ViewCartRequest request) {
+        return cartService.viewCart(request);
     }
 }

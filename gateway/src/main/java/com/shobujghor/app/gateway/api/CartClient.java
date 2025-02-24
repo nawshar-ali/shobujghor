@@ -2,8 +2,10 @@ package com.shobujghor.app.gateway.api;
 
 import com.shobujghor.app.utility.request.cart.AddToCartRequest;
 import com.shobujghor.app.utility.request.cart.CheckoutRequest;
+import com.shobujghor.app.utility.request.cart.ViewCartRequest;
 import com.shobujghor.app.utility.response.cart.AddToCartResponse;
 import com.shobujghor.app.utility.response.cart.CheckoutResponse;
+import com.shobujghor.app.utility.response.cart.ViewCartResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -14,4 +16,7 @@ public interface CartClient {
 
     @PostMapping("/checkout")
     CheckoutResponse checkout(CheckoutRequest request);
+
+    @PostMapping("/view")
+    ViewCartResponse viewCart(ViewCartRequest request);
 }

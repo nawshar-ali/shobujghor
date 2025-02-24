@@ -10,10 +10,12 @@ import com.shobujghor.app.utility.exception.ErrorHelperService;
 import com.shobujghor.app.utility.models.Cart;
 import com.shobujghor.app.utility.request.cart.AddToCartRequest;
 import com.shobujghor.app.utility.request.cart.CheckoutRequest;
+import com.shobujghor.app.utility.request.cart.ViewCartRequest;
 import com.shobujghor.app.utility.request.inventory.FetchItemRequest;
 import com.shobujghor.app.utility.request.order.PlaceOrderRequest;
 import com.shobujghor.app.utility.response.cart.AddToCartResponse;
 import com.shobujghor.app.utility.response.cart.CheckoutResponse;
+import com.shobujghor.app.utility.response.cart.ViewCartResponse;
 import com.shobujghor.app.utility.util.MathUtil;
 import io.awspring.cloud.sqs.operations.SqsTemplate;
 import lombok.RequiredArgsConstructor;
@@ -99,6 +101,19 @@ public class CartServiceImpl implements CartService {
         } else {
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.CART_NOT_FOUND);
         }
+    }
+
+    @Override
+    public ViewCartResponse viewCart(ViewCartRequest request) {
+        return cartRepository.getData(request.getCartId())
+                .map(cart -> ViewCartResponse.builder()
+                        .totalDiscountAmount(cart.getTotalDiscountAmount())
+                        .totalBillAmount(cart.getTotalBillAmount())
+                        .amountToBePaid(cart.getAmountToBePaid())
+                        .itemList(cart.getItemList())
+                        .build()
+                )
+                .orElseGet(() -> ViewCartResponse.builder().build());
     }
 
     private void createNewCart(AddToCartRequest request, ItemDto item) {
