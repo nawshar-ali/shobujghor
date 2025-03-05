@@ -1,9 +1,6 @@
 package com.shobujghor.app.utility.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.shobujghor.app.utility.constants.OrderStatus;
 import com.shobujghor.app.utility.constants.TableNames;
 import lombok.AllArgsConstructor;
@@ -43,7 +40,7 @@ public class Order {
     @DynamoDBAttribute
     private List<String> items;
 
-    @DynamoDBAttribute
+    @DynamoDBTypeConvertedEnum
     @Builder.Default
     private OrderStatus status = OrderStatus.PROCESSING;
 }

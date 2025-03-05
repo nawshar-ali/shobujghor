@@ -40,7 +40,7 @@ public class CartServiceImpl implements CartService {
     private final Gson gson;
 
     private final String CART_ID_PREFIX = "#CART-";
-    private final String ORDER_ID_PREFIX = "#ORDER";
+    private final String ORDER_ID_PREFIX = "#ORDER_";
 
     @Value("${order.queue}")
     private String orderQueue;
@@ -73,7 +73,7 @@ public class CartServiceImpl implements CartService {
             var cart = cartOpt.get();
 
             var placeOrderRequest = PlaceOrderRequest.builder()
-                    .orderId(getOrderId(request.getCartId()))
+                    .orderId(getOrderId())
                     .customerEmail(request.getCustomerEmail())
                     .originalPrice(cart.getTotalBillAmount())
                     .discountPrice(cart.getTotalDiscountAmount())
@@ -90,14 +90,14 @@ public class CartServiceImpl implements CartService {
                 sqsTemplate.sendAsync(sqsSendOptions -> sqsSendOptions
                         .queue(orderQueue)
                         .payload(sqsPayload)
-                        .messageGroupId(getOrderId(request.getCartId())));
+                        .messageGroupId(placeOrderRequest.getOrderId()));
                 cartRepository.deleteData(cart);
             } catch (Exception e) {
-                log.error("OrderId: {} | Failed to publish event in order queue", getOrderId(request.getCartId()), e);
+                log.error("OrderId: {} | Failed to publish event in order queue", placeOrderRequest.getOrderId(), e);
                 throw errorHelperService.buildExceptionFromCode(e.getMessage());
             }
 
-            return CheckoutResponse.builder().orderId(getOrderId(request.getCartId())).success(true).build();
+            return CheckoutResponse.builder().orderId(placeOrderRequest.getOrderId()).success(true).build();
         } else {
             throw errorHelperService.buildExceptionFromCode(ErrorUtil.CART_NOT_FOUND);
         }
@@ -194,8 +194,7 @@ public class CartServiceImpl implements CartService {
         return CART_ID_PREFIX + UUID.randomUUID().toString();
     }
 
-    private String getOrderId(String cartId) {
-        var subStr = cartId.substring(5);
-        return ORDER_ID_PREFIX + subStr;
+    private String getOrderId() {
+        return ORDER_ID_PREFIX + UUID.randomUUID().toString();
     }
 }

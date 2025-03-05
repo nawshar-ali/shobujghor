@@ -24,7 +24,15 @@ const Login = () => {
             if (response.ok) {
                 const data = await response.json();
                 login(data.accessToken); // Save user info in context
-                localStorage.setItem("token", data.accessToken); // Save JWT
+
+                const now = Date.now();
+                const item = {
+                    token: data.accessToken,
+                    expiry: now + data.expiresIn * 1000 // Convert seconds to milliseconds
+                };
+
+                localStorage.setItem("token", JSON.stringify(item)); // Save JWT
+
                 localStorage.setItem("email", formData.email)
 
                 if (redirectPath) {

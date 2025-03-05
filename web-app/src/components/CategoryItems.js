@@ -29,13 +29,31 @@ const CategoryItems = () => {
     }, [categoryName]);
 
     const handleAddToCart = async (itemId) => {
-        if (!user) {
+        if (getToken()) {
+
+            await addToCart({itemId, categoryName});
+        } else {
             setRedirectPath(`/category/${categoryName}`); // Save the current path
             navigate("/login");
-        } else {
-            await addToCart({itemId, categoryName});
         }
     };
+
+    function getToken() {
+        const itemStr = localStorage.getItem("token");
+        if (!itemStr) {
+            return null;
+        }
+
+        const item = JSON.parse(itemStr);
+        const now = Date.now();
+
+        if (now > item.expiry) {
+            localStorage.removeItem("token"); // Remove expired token
+            return null;
+        }
+
+        return item.token;
+    }
 
     return (
         <div className="container mt-5">

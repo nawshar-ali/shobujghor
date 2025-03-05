@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 const ViewCart = () => {
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [deliveryAddress, setDeliveryAddress] = useState("");
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -11,7 +12,7 @@ const ViewCart = () => {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`, // Assuming authentication is needed
+                        Authorization: `Bearer ${getToken()}`, // Assuming authentication is needed
                     },
                     body: JSON.stringify({cartId: localStorage.getItem("email")})
                 });
@@ -31,6 +32,58 @@ const ViewCart = () => {
 
         fetchCart();
     }, []);
+
+    function getToken() {
+        const itemStr = localStorage.getItem("token");
+        if (!itemStr) {
+            return null;
+        }
+
+        const item = JSON.parse(itemStr);
+        const now = Date.now();
+
+        if (now > item.expiry) {
+            localStorage.removeItem("token"); // Remove expired token
+            return null;
+        }
+
+        return item.token;
+    }
+
+
+    const handleCheckout = async () => {
+        if (!deliveryAddress) {
+            alert("Please enter a delivery address.");
+            return;
+        }
+
+        const checkoutData = {
+            customerEmail: localStorage.getItem("email"), // Assuming cart.id is the customer email
+            cartId: localStorage.getItem("email"), // Assuming cartId is the same as the user email or unique ID
+            deliveryAddress: deliveryAddress,
+        };
+
+        try {
+            const response = await fetch("http://localhost:8001/gateway/cart/checkout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getToken()}`,
+                },
+                body: JSON.stringify(checkoutData),
+            });
+
+            if (!response.ok) {
+                throw new Error("Checkout failed");
+            }
+
+            alert("Checkout successful! Your order is being processed.");
+            setCart(null); // Clear the cart after successful checkout
+        } catch (error) {
+            console.error("Error during checkout:", error);
+            alert("Checkout failed. Please try again.");
+        }
+    };
 
     if (loading) {
         return <div className="container mt-5"><h5>Loading cart...</h5></div>;
@@ -72,7 +125,21 @@ const ViewCart = () => {
                 <h4 className="text-primary">Amount to be Paid: ${cart.amountToBePaid}</h4>
             </div>
 
-            <button className="btn btn-success mt-3">Proceed to Checkout</button>
+            {/* Delivery Address Input */}
+            <div className="mt-3">
+                <label className="form-label">Delivery Address:</label>
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter delivery address"
+                    value={deliveryAddress}
+                    onChange={(e) => setDeliveryAddress(e.target.value)}
+                />
+            </div>
+
+            <button className="btn btn-success mt-3" onClick={handleCheckout}>
+                Proceed to Checkout
+            </button>
         </div>
     );
 };
