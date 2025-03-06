@@ -1,11 +1,8 @@
-package com.shobujghor.app.order.service;
+package com.shobujghor.app.gateway.service;
 
 import com.shobujghor.app.utility.request.order.OrderListRequest;
-import com.shobujghor.app.utility.request.order.PlaceOrderRequest;
 import com.shobujghor.app.utility.response.order.OrderListResponse;
 
 public interface OrderService {
-    void placeOrder(PlaceOrderRequest request);
-
     OrderListResponse getOrderList(OrderListRequest request);
 }

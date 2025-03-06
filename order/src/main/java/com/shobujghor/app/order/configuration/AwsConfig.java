@@ -35,7 +35,7 @@ public class AwsConfig {
 
         var mapperConfig = new DynamoDBMapperConfig.Builder()
                 .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNamePrefix(profile))
-                .withPaginationLoadingStrategy(ITERATION_ONLY)
+                //.withPaginationLoadingStrategy(ITERATION_ONLY)
                 .build();
 
         return new DynamoDBMapper(client, mapperConfig);
