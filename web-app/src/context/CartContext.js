@@ -9,7 +9,7 @@ export const CartProvider = ({ children }) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    Authorization: `Bearer ${getToken()}`,
                 },
 
                 body: JSON.stringify({ itemName: data.itemId, categoryName: data.categoryName, quantity: "1", cartId: localStorage.getItem("email")}),
@@ -23,6 +23,23 @@ export const CartProvider = ({ children }) => {
             console.error(error);
         }
     };
+
+    function getToken() {
+        const itemStr = localStorage.getItem("token");
+        if (!itemStr) {
+            return null;
+        }
+
+        const item = JSON.parse(itemStr);
+        const now = Date.now();
+
+        if (now > item.expiry) {
+            localStorage.removeItem("token"); // Remove expired token
+            return null;
+        }
+
+        return item.token;
+    }
 
     return <CartContext.Provider value={{ addToCart }}>{children}</CartContext.Provider>;
 };
